@@ -27,14 +27,17 @@ public class MemberListServlet extends HttpServlet {
 	public void doGet(
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Connection conn = null;
+		//Connection conn = null;
 
 		try {
 			ServletContext sc = this.getServletContext();			
-			conn =(Connection)sc.getAttribute("conn"); 
+			//conn =(Connection)sc.getAttribute("conn"); 
 			
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection(conn);
+			//MemberDao memberDao = new MemberDao();
+			//memberDao.setConnection(conn);
+			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao"); 
+			
+			request.setAttribute("members", memberDao.selectList());
 	/*		stmt = conn.createStatement(); 	
 			
 			rs = stmt.executeQuery(

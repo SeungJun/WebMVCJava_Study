@@ -35,6 +35,12 @@ public class MemberUpdateServlet extends HttpServlet {
 			
 			MemberDao memberDao = new MemberDao(); 
 			memberDao.setConnection(conn);
+			
+			Member member = memberDao.selectOne(
+					Integer.parseInt(request.getParameter("no")));
+			
+			request.setAttribute("member", member);
+			//request.setAttribute("members", memberDao.selectOne(0));
 /*			stmt = conn.createStatement();
 			
 			rs = stmt.executeQuery(
@@ -68,7 +74,7 @@ public class MemberUpdateServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher(
 					"/member/MemberUpdateForm.jsp");
 			rd.forward(request, response);
-			
+		
 /*			PrintWriter out = response.getWriter();
 			out.println("<html><head><title>회원정보</title></head>");
 			out.println("<body><h1>회원정보</h1>");
@@ -89,10 +95,14 @@ public class MemberUpdateServlet extends HttpServlet {
 			out.println("</form>");
 			out.println("</body></html>");*/
 			
-/*		} catch (Exception e) {
-			throw new ServletException(e);
-			
-		} finally {
+		} catch (Exception e) {
+			//throw new ServletException(e);
+			e.printStackTrace();
+			request.setAttribute("error", e);
+		    RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
+		    rd.forward(request, response);
+		} 
+		/*finally {
 			try {if (rs != null) rs.close();} catch(Exception e) {}
 			try {if (stmt != null) stmt.close();} catch(Exception e) {}
 			//try {if (conn != null) conn.close();} catch(Exception e) {}
@@ -110,23 +120,34 @@ public class MemberUpdateServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			conn = (Connection)sc.getAttribute("conn");  
-			stmt = conn.prepareStatement(
+			
+			MemberDao memberDao = new MemberDao(); 
+			memberDao.setConnection(conn);
+			
+			memberDao.update(new Member()
+			.setEmail(request.getParameter("email"))
+			.setName(request.getParameter("name"))
+			.setNo(Integer.parseInt(request.getParameter("no")))
+			); 
+	/*		stmt = conn.prepareStatement(
 					"UPDATE MEMBERS SET EMAIL=?,MNAME=?,MOD_DATE=now()"
 					+ " WHERE MNO=?");
 			stmt.setString(1, request.getParameter("email"));
 			stmt.setString(2, request.getParameter("name"));
 			stmt.setInt(3, Integer.parseInt(request.getParameter("no")));
-			stmt.executeUpdate();
+			stmt.executeUpdate();*/
 			
 			response.sendRedirect("list");
 			
 		} catch (Exception e) {
 			//throw new ServletException(e);
 			e.printStackTrace();
-			
-		} finally {
+			request.setAttribute("error", e);
+		    RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
+		    rd.forward(request, response);
+		} /*finally {
 			try {if (stmt != null) stmt.close();} catch(Exception e) {}
 			try {if (conn != null) conn.close();} catch(Exception e) {}
-		}
+		}*/
 	}
 }

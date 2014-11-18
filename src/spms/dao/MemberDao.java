@@ -104,7 +104,7 @@ public class MemberDao {
 			stmt = conn.createStatement(); 
 			
 			rs=stmt.executeQuery(
-					"SELECT MNO,EMAIL,MNAME,CRE_DATE FROM MEMERS" +
+					"SELECT MNO,EMAIL,MNAME,CRE_DATE FROM MEMBERS" +
 			" WHERE MNO="+ no); 
 			
 			if(rs.next()){
@@ -129,22 +129,45 @@ public class MemberDao {
 		PreparedStatement stmt = null;
 		try{
 			stmt = conn.prepareStatement(
-					"UPDATE MEMBERS SET EMAIL=?,MOD_DATE=now()"
+					"UPDATE MEMBERS SET EMAIL=?,MNAME=?,MOD_DATE=now()"
 					+ " WHERE MNO=?");
 			stmt.setString(1, member.getEmail());
 			stmt.setString(2, member.getName());
 			stmt.setInt(3, member.getNo());
+			return stmt.executeUpdate(); 
 			
 		}catch(Exception e){
-			e.printStackTrace(); 
+			throw e; 
 		}finally{
 			try{if(stmt!=null)stmt.close();}catch(Exception e){}
 			//try{if(conn!=null)conn.close();}catch(Exception e){}
 		}
-		return stmt.executeUpdate(); 
 	}
 	
 	public Member exist(String email, String password)throws Exception{
+
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
 		
+		try{
+		stmt = conn.prepareStatement(
+					"SELECT MNAME,EMAIL FROM MEMBERS"
+					+ " WHERE EMAIL=? AND PWD=?");
+			stmt.setString(1, email);
+			stmt.setString(2, password);
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				return new Member()
+						.setEmail(rs.getString("EMAIL"))
+						.setName(rs.getString("MNAME"));
+			} else {return null; 
+			}
+		}catch(Exception e){
+			throw e; 
+		}
+		finally {
+			try {if (rs != null) rs.close();} catch (Exception e) {}
+			try {if (stmt != null) stmt.close();} catch (Exception e) {}
+		}
 	}
 }
