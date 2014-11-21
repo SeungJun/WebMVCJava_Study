@@ -14,10 +14,14 @@ import javax.servlet.ServletException;
 import spms.vo.Member;
 
 //JDBC SQL 쿼리 로직 클래스 : 하나의 테이블에 대응 - appdb
+//MemberDao 클래스에서 주목할 것은 connection 인스턴스 변수와 셋터 메서드 입니다. 
+//여기선 ServletContext에 접근할 수 없기 때문에, ServletContext에 보관된 DBConnection 객체를 꺼낼 수 없다. 
+//이를 해결하기 위해 외부로부터 Connection 객체를 주입 받기 위한 셋터 메서드와 인스턴스 변수를 준비 
 public class MemberDao {
 	Connection conn; 
 	
-	public void setConnection(Connection connection){
+	public void setConnection(Connection connection)//외부로부터 주입된 객체. Dependecy Injection, IoC 
+	{
 		this.conn=connection; 
 	}
 	

@@ -35,6 +35,8 @@ public class MemberListServlet extends HttpServlet {
 			
 			//MemberDao memberDao = new MemberDao();
 			//memberDao.setConnection(conn);
+			
+			//servletcontext에 있는 memberdao 객체를 재사용. garbage가 생성되지 않는다. 
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao"); 
 			
 			request.setAttribute("members", memberDao.selectList());
