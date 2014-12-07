@@ -45,14 +45,17 @@ public class MemberAddServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// CharacterEncodingFilter에서 처리
 		//request.setCharacterEncoding("UTF-8");
-		Connection conn = null;
+//		Connection conn = null;
 		//PreparedStatement stmt = null;
 		try {
 			ServletContext sc = this.getServletContext();			
-			conn =(Connection)sc.getAttribute("conn"); 
+//			conn =(Connection)sc.getAttribute("conn"); 
 			
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection(conn);
+			//servletcontext에 있는 memberdao 객체를 재사용. garbage가 생성되지 않는다. 
+			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao"); 
+			
+//			MemberDao memberDao = new MemberDao();
+//			memberDao.setConnection(conn);
 			
 			//VO에다가 입력값을 던져주고 파라피터값을 요청 
 			memberDao.insert(new Member()

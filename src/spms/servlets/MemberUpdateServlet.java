@@ -26,15 +26,19 @@ public class MemberUpdateServlet extends HttpServlet {
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		Connection conn = null;
+//		Connection conn = null;
 		//Statement stmt = null;
 		//ResultSet rs = null;
 		try {
 			ServletContext sc = this.getServletContext();
-			conn = (Connection)sc.getAttribute("conn"); 
+//			conn = (Connection)sc.getAttribute("conn"); 
 			
-			MemberDao memberDao = new MemberDao(); 
-			memberDao.setConnection(conn);
+//			MemberDao memberDao = new MemberDao(); 
+//			memberDao.setConnection(conn);
+			
+			//servletcontext에 있는 memberdao 객체를 재사용. garbage가 생성되지 않는다. 
+			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao"); 
+			
 			
 			Member member = memberDao.selectOne(
 					Integer.parseInt(request.getParameter("no")));
@@ -115,14 +119,18 @@ public class MemberUpdateServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// CharacterEncodingFilter에서 처리
 		//request.setCharacterEncoding("UTF-8");
-		Connection conn = null;
-		PreparedStatement stmt = null;
+//		Connection conn = null;
+//		PreparedStatement stmt = null;
 		try {
 			ServletContext sc = this.getServletContext();
-			conn = (Connection)sc.getAttribute("conn");  
+//			conn = (Connection)sc.getAttribute("conn");  
 			
-			MemberDao memberDao = new MemberDao(); 
-			memberDao.setConnection(conn);
+//			MemberDao memberDao = new MemberDao(); 
+//			memberDao.setConnection(conn);
+			
+			//servletcontext에 있는 memberdao 객체를 재사용. garbage가 생성되지 않는다. 
+			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao"); 
+			
 			
 			memberDao.update(new Member()
 			.setEmail(request.getParameter("email"))
