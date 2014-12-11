@@ -34,18 +34,16 @@ public class LogInServlet extends HttpServlet {
 	protected void doPost(
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		Connection conn = null;
+		Connection conn = null;
 //		PreparedStatement stmt = null;
 //		ResultSet rs = null;
 		
 		try {
 			ServletContext sc = this.getServletContext();
-//			conn = (Connection) sc.getAttribute("conn");  
-			//servletcontext에 있는 memberdao 객체를 재사용. garbage가 생성되지 않는다. 
-			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao"); 
+			conn = (Connection) sc.getAttribute("conn");  
 			
-//			MemberDao memberDao = new MemberDao(); 
-//			memberDao.setConnection(conn);
+			MemberDao memberDao = new MemberDao(); 
+			memberDao.setConnection(conn);
 			
 			Member member = memberDao.exist(
 					request.getParameter("email"),

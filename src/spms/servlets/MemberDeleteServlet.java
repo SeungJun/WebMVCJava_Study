@@ -23,23 +23,18 @@ public class MemberDeleteServlet extends HttpServlet {
 	public void doGet(
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		Connection conn = null;
+		Connection conn = null;
 		//Statement stmt = null;
 		try {
 			ServletContext sc = this.getServletContext();
-//			conn =(Connection)sc.getAttribute("conn"); 
-			
-			//servletcontext에 있는 memberdao 객체를 재사용. garbage가 생성되지 않는다. 
-			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao"); 
-			
+			conn =(Connection)sc.getAttribute("conn"); 
 			/*Class.forName(sc.getInitParameter("driver"));
 			conn = DriverManager.getConnection(
 						sc.getInitParameter("url"),
 						sc.getInitParameter("username"),
 						sc.getInitParameter("password")); */
-			
-//			MemberDao memberDao = new MemberDao();
-//			memberDao.setConnection(conn);
+			MemberDao memberDao = new MemberDao();
+			memberDao.setConnection(conn);
 		
 			//DAO에서 MNO튜플을 요청하여 삭제 쿼리를 요청 
 			memberDao.delete(Integer.parseInt(request.getParameter("no"))); 

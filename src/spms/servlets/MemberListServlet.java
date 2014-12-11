@@ -40,7 +40,6 @@ public class MemberListServlet extends HttpServlet {
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao"); 
 			
 			request.setAttribute("members", memberDao.selectList());
-			
 	/*		stmt = conn.createStatement(); 	
 			
 			rs = stmt.executeQuery(
