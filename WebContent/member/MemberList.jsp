@@ -12,7 +12,7 @@
 <body>
 <jsp:include page="/Header.jsp" />
 <h1>회원목록2</h1>
-<p><a href='add'>신규 회원</a></p>
+<p><a href='add.do'>신규 회원</a></p>
 <%-- <jsp:useBean id ="members"
              scope="request"
              class="java.util.ArrayList"
@@ -29,7 +29,7 @@ for(Member member : members) {
 <a href='delete?no=<%=member.getNo()%>'>[삭제]</a><br>
 <%} %> --%>
 <c:forEach var="member" items="${members}">
-${member.no}
+${member.no},
 <a href='update?no=${member.no}'>${member.name}</a>, 
 ${member.email}, 
 ${member.createdDate}
